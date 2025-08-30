@@ -133,7 +133,7 @@ const HomePage = () => {
 
   const stats = [
     {
-      number: "15+",
+      number: "8+",
       label: "Years Experience",
       icon: Award,
       description: "Trusted industry expertise",
@@ -315,7 +315,7 @@ const HomePage = () => {
     { name: "Tremco", logo: "https://www.rpminc.com/media/3013/trbm_logo-construction_products-01-small.png" },
     { name: "Armacell", logo: "https://www.seekpng.com/png/detail/289-2898763_avatar-placeholder-asmaco.png" },
     { name: "Wacker", logo: "https://brandeps.com/logo-download/W/Wacker-Chemie-logo-01.png" },
-    { name: "Dr. Fixit", logo: "data:image/png;base64,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" },
+    { name: "Dr. Fixit", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEibYHHzMS0Dk7Lk16w8lsDSKe7P88eE6O_6coAhBzn-zGCmQ5hA1v0Q3Ra6L_Gb9QCcjSOO5SaoMJP5Dxh-klg4C7R1opkgiv8r8z-ENsfhm8OFHaPoQ5vmzbRGLpjd0XASCKOB/s1600/drfixit+logo.png" },
     { name: "Dolphin", logo: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRitVO_gVmoy2eTzMyL40053MM-gGP0P5Cy8cEN-8JrwzvXkaKB" },
     { name: "UltraPro", logo: "https://aliglaziers.co.ke/image/cache/catalog/1%20NEW/SAS_Brands_banner-vaultex-100x100.png" },
     { name: "Viewflex", logo: "https://hardwarepasal.com/src/img/brand/2018-10-09-09-46-51_vQUr74odQK_brand.png" },
@@ -323,7 +323,9 @@ const HomePage = () => {
     { name: "Honeywell", logo: "https://1000logos.net/wp-content/uploads/2017/12/Honeywell-Logo.png" },
     { name: "Miller", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/4/45/Miller_Brewery_Logo.svg/800px-Miller_Brewery_Logo.svg.png" },
     { name: "Makita", logo: "https://images.seeklogo.com/logo-png/57/1/makita-power-tools-logo-png_seeklogo-572464.png" },
-    { name: "DeWALT", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/DeWalt_Logo.svg/1024px-DeWalt_Logo.svg.png" }
+    { name: "DeWALT", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/DeWalt_Logo.svg/1024px-DeWalt_Logo.svg.png" },
+    { name: "DEXTA", logo: "https://scontent.fccj2-1.fna.fbcdn.net/v/t39.30808-1/494695585_122101483118856714_3165656557114136193_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=103&ccb=1-7&_nc_sid=e99d92&_nc_ohc=dC73qRWe5BkQ7kNvwE9U0XD&_nc_oc=AdmyUh7c5iiCjJv1jRQuATN8lQkuQ5-6wxZXg3fYb0EJ7122hlglLjLFO-mcU-BjEuvlrbuTNA3xJXaCBWHwv6MJ&_nc_zt=24&_nc_ht=scontent.fccj2-1.fna&_nc_gid=TOSSrn9HhCeeAb3U7W-7Xg&oh=00_AfUR-08e8hzG17qCWbN4o2r3-PZL0Ype-50hlcn3p7R6nA&oe=68B895CA" }
+
   ];
 
   const testimonials = [
@@ -573,39 +575,10 @@ const HomePage = () => {
                           {product}
                         </div>
                       ))}
-                      {category.products.length > 3 && (
-                        <div className="home-product-feature-tag more-tag">
-                          +{category.products.length - 3} more
-                        </div>
-                      )}
+                     
                     </div>
 
-                    <button
-                      className="home-product-explore-btn"
-                      onClick={() => {
-                        console.log(`Exploring ${category.title}`);
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.transform = 'translateY(-3px) scale(1.02)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.transform = 'translateY(0) scale(1)';
-                      }}
-                    >
-                      <span>Explore Range</span>
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M9 5l7 7-7 7" />
-                      </svg>
-                    </button>
+                   
                   </div>
                 </div>
               </div>
@@ -695,19 +668,13 @@ const HomePage = () => {
               Get in touch with our experts for personalized solutions and competitive quotes
             </p>
             <div className="home-cta-buttons">
-              <a
-                href="tel:+971526822173"
-                className="home-btn-primary large"
-              >
-                <Phone size={20} />
-                <span>Get Quote Now</span>
-              </a>
+             
               <Link
                 to="/contact"
                 className="home-btn-outline large"
               >
                 <Mail size={20} />
-                <span>Contact Us</span>
+                <span>Get Quote Now</span>
               </Link>
             </div>
           </div>

@@ -1,5 +1,6 @@
 // DextaAboutSection.jsx - Complete Enhanced About Section for DEXTA
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; // Add this import for routing
 import { 
   CheckCircle, 
   Play, 
@@ -99,7 +100,7 @@ const DextaAboutSection = () => {
               <span>Premium Quality Materials</span>
             </div>
             <h2 className="about-main-title">
-              Welcome to <span className="highlight glow-text">DEXTA Trading LLC</span>, where innovation meets excellence in{' '}
+              Welcome to <span className="highlight glow-text">DEXTA Building Materials Trading LLC</span>, where innovation meets excellence in{' '}
               <span className="highlight glow-text">building materials</span>
             </h2>
             <p className="about-main-description">
@@ -118,7 +119,7 @@ const DextaAboutSection = () => {
               </div>
               <div className="trust-item">
                 <Award size={16} />
-                <span>15+ Years</span>
+                <span>8+ Years</span>
               </div>
             </div>
           </div>
@@ -212,10 +213,10 @@ const DextaAboutSection = () => {
             </div>
           </div>
           <div className="cta-sections">
-            <button className="find-chapter-btn">
+            <Link to="/contact" className="find-chapter-btn">
               <span>GET QUOTE NOW</span>
               <ArrowRight size={16} />
-            </button>
+            </Link>
             <div className="cta-note">Join thousands of successful projects</div>
           </div>
         </div>
@@ -306,7 +307,7 @@ const DextaAboutSection = () => {
                   <Truck size={24} />
                 </div>
               </div>
-              <div className="stat-number animated-counter" data-target="24">24H</div>
+              <div className="stat-number animated-counter" data-target="23">23H</div>
               <div className="stat-label">Fast Delivery</div>
               <div className="stat-description">Same day service</div>
               <div className="progress-bar">

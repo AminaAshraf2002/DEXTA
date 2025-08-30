@@ -157,10 +157,10 @@ const DextaAboutPage = () => {
           </h1>
           
           <p className="about-hero-subtitle" data-aos="fade-up" data-aos-delay="400">
-            For over 15 years, we've been the trusted partner for contractors, developers, and architects across the UAE and beyond, delivering premium quality construction materials and exceptional service.
+            For over 8 years, we've been the trusted partner for contractors, developers, and architects across the UAE and beyond, delivering premium quality construction materials and exceptional service.
           </p>
           
-          <a href="#contact" className="about-hero-cta" data-aos="fade-up" data-aos-delay="600">
+          <a href="/contact" className="about-hero-cta" data-aos="fade-up" data-aos-delay="600">
             <span>Get Started Today</span>
             <ArrowRight size={18} />
           </a>
@@ -168,7 +168,7 @@ const DextaAboutPage = () => {
           {/* About Stats Grid */}
           <div className="about-stats-grid" data-aos="fade-up" data-aos-delay="800">
             <div className="about-stat-card">
-              <div className="about-stat-number animated-counter" data-target="15">15+</div>
+              <div className="about-stat-number animated-counter" data-target="7">7+</div>
               <div className="about-stat-label">Years Experience</div>
             </div>
             <div className="about-stat-card">
@@ -377,10 +377,7 @@ const DextaAboutPage = () => {
               <Phone size={18} />
               <span>Get Quote</span>
             </a>
-            <a href="#catalog" className="about-cta-button secondary">
-              <Mail size={18} />
-              <span>View Catalog</span>
-            </a>
+            
           </div>
         </div>
       </section>

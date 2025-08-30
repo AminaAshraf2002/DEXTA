@@ -559,7 +559,7 @@ const Header = () => {
           }
           
           .logo-image {
-            height: 40px;
+            height: 50px;
           }
           
           .logo-text {
@@ -582,7 +582,7 @@ const Header = () => {
           }
           
           .logo-image {
-            height: 35px;
+            height: 70px;
           }
           
           .logo-text {

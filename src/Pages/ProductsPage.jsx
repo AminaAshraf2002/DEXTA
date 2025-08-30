@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
   Search, Filter, Grid, List, ArrowRight, Star, Download, Eye,
-  Factory, Shield, Building2, Wrench, Zap, Target, Settings, 
+  Factory, Shield, Building2, Wrench, Zap, Target, Settings,
   Globe, TrendingUp, ChevronDown, SlidersHorizontal, X, Check,
-  ShoppingCart, Heart, Share2, ChevronRight, Phone, Mail
+  ShoppingCart, Heart, Share2, ChevronRight, Phone, Mail,
+  ChevronLeft
 } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -20,6 +21,17 @@ const ProductsPage = () => {
   const [priceRange, setPriceRange] = useState('all');
   const [isVisible, setIsVisible] = useState({});
   const [wishlist, setWishlist] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+
+  // Track window width for responsive behavior
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Combine all products from different data sources
   const allProducts = [
@@ -32,10 +44,10 @@ const ProductsPage = () => {
   const filteredProducts = allProducts.filter(product => {
     const matchesCategory = activeFilter === 'all' || product.category === activeFilter;
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      product.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesBrand = selectedBrands.length === 0 || selectedBrands.includes(product.brand);
-    
+
     return matchesCategory && matchesSearch && matchesBrand;
   });
 
@@ -67,15 +79,15 @@ const ProductsPage = () => {
   }, []);
 
   const toggleBrandFilter = (brand) => {
-    setSelectedBrands(prev => 
-      prev.includes(brand) 
+    setSelectedBrands(prev =>
+      prev.includes(brand)
         ? prev.filter(b => b !== brand)
         : [...prev, brand]
     );
   };
 
   const toggleWishlist = (productId) => {
-    setWishlist(prev => 
+    setWishlist(prev =>
       prev.includes(productId)
         ? prev.filter(id => id !== productId)
         : [...prev, productId]
@@ -92,12 +104,16 @@ const ProductsPage = () => {
     return category ? category.title : 'Product';
   };
 
-  // Custom inline styles to ensure styling works
+  // Responsive helper functions
+  const isMobile = windowWidth < 768;
+  const isTablet = windowWidth < 1024;
+
+  // Custom inline styles with responsive adjustments
   const styles = {
     heroSection: {
       background: 'linear-gradient(135deg, #111827 0%, #1f2937 100%)',
       color: 'white',
-      padding: '4rem 0',
+      padding: isMobile ? '2rem 0' : '4rem 0',
     },
     searchBar: {
       position: 'sticky',
@@ -106,6 +122,14 @@ const ProductsPage = () => {
       backgroundColor: 'white',
       borderBottom: '1px solid #e5e7eb',
       boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+    },
+    categoryNavigation: {
+      backgroundColor: '#f9fafb',
+      borderBottom: '1px solid #e5e7eb',
+      padding: isMobile ? '0.75rem 0' : '1rem 0',
+      position: 'sticky',
+      top: isMobile ? '4.5rem' : '5rem',
+      zIndex: 30,
     },
     productCard: {
       backgroundColor: 'white',
@@ -137,11 +161,15 @@ const ProductsPage = () => {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
       <Header />
-      
+
       {/* Header Section */}
       <div style={styles.heroSection}>
-        <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+        <div style={{
+          maxWidth: '80rem',
+          margin: '0 auto',
+          padding: isMobile ? '0 1rem' : '0 1rem',
+        }}>
+          <div style={{ textAlign: 'center', marginBottom: isMobile ? '1.5rem' : '2rem' }}>
             <div style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -156,18 +184,20 @@ const ProductsPage = () => {
               Product Catalog
             </div>
             <h1 style={{
-              fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+              fontSize: isMobile ? '2rem' : isTablet ? '2.5rem' : 'clamp(2.5rem, 5vw, 3.5rem)',
               fontWeight: '700',
               marginBottom: '1rem',
-              fontFamily: "'Playfair Display', serif"
+              fontFamily: "'Playfair Display', serif",
+              lineHeight: 1.2,
             }}>
               Premium <span style={{ color: '#ef4444' }}>Construction Materials</span>
             </h1>
             <p style={{
-              fontSize: '1.25rem',
+              fontSize: isMobile ? '1rem' : '1.25rem',
               color: 'rgba(255, 255, 255, 0.8)',
               maxWidth: '40rem',
-              margin: '0 auto'
+              margin: '0 auto',
+              padding: isMobile ? '0 1rem' : '0',
             }}>
               Discover our comprehensive range of high-quality products for all your construction needs
             </p>
@@ -176,9 +206,9 @@ const ProductsPage = () => {
           {/* Quick Stats */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-            gap: '1.5rem',
-            marginTop: '3rem'
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(150px, 1fr))',
+            gap: isMobile ? '1rem' : '1.5rem',
+            marginTop: isMobile ? '2rem' : '3rem'
           }}>
             {[
               { number: `${allProducts.length}+`, label: "Products" },
@@ -188,7 +218,7 @@ const ProductsPage = () => {
             ].map((stat, index) => (
               <div key={index} style={{ textAlign: 'center' }}>
                 <div style={{
-                  fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+                  fontSize: isMobile ? '1.5rem' : 'clamp(1.5rem, 4vw, 2rem)',
                   fontWeight: '700',
                   color: '#ef4444',
                   marginBottom: '0.25rem',
@@ -196,7 +226,10 @@ const ProductsPage = () => {
                 }}>
                   {stat.number}
                 </div>
-                <div style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.7)' }}>
+                <div style={{
+                  fontSize: isMobile ? '0.75rem' : '0.875rem',
+                  color: 'rgba(255, 255, 255, 0.7)'
+                }}>
                   {stat.label}
                 </div>
               </div>
@@ -205,30 +238,34 @@ const ProductsPage = () => {
         </div>
       </div>
 
-      {/* Search and Filter Bar */}
+      {/* Search Bar */}
       <div style={styles.searchBar}>
-        <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '1rem' }}>
+        <div style={{
+          maxWidth: '80rem',
+          margin: '0 auto',
+          padding: isMobile ? '0.75rem 1rem' : '1rem'
+        }}>
           <div style={{
             display: 'flex',
-            flexDirection: window.innerWidth < 1024 ? 'column' : 'row',
+            flexDirection: isMobile ? 'column' : 'row',
             gap: '1rem',
-            alignItems: 'center'
+            alignItems: isMobile ? 'stretch' : 'center'
           }}>
             {/* Search */}
-            <div style={{ position: 'relative', flex: 1, maxWidth: '28rem' }}>
-              <Search 
+            <div style={{ position: 'relative', flex: 1, maxWidth: isMobile ? '100%' : '28rem' }}>
+              <Search
                 style={{
                   position: 'absolute',
                   left: '0.75rem',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   color: '#6b7280'
-                }} 
-                size={20} 
+                }}
+                size={20}
               />
               <input
                 type="text"
-                placeholder="Search products, brands, or descriptions..."
+                placeholder={isMobile ? "Search products..." : "Search products, brands, or descriptions..."}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 style={{
@@ -244,72 +281,220 @@ const ProductsPage = () => {
               />
             </div>
 
-            {/* Filters Toggle */}
+            <div style={{
+              display: 'flex',
+              gap: '0.75rem',
+              justifyContent: isMobile ? 'space-between' : 'flex-start'
+            }}>
+              {/* Advanced Filters Toggle - Only for brands and other filters */}
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.5rem 1rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '0.5rem',
+                  backgroundColor: 'white',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  fontSize: isMobile ? '0.875rem' : '1rem',
+                }}
+              >
+                <SlidersHorizontal size={20} />
+                {isMobile ? 'Brands' : 'More Filters'}
+                {selectedBrands.length > 0 && (
+                  <span style={{
+                    marginLeft: '0.25rem',
+                    backgroundColor: '#dc2626',
+                    color: 'white',
+                    fontSize: '0.75rem',
+                    padding: '0.125rem 0.5rem',
+                    borderRadius: '9999px'
+                  }}>
+                    {selectedBrands.length}
+                  </span>
+                )}
+              </button>
+
+              {/* View Toggle */}
+              <div style={{
+                display: 'flex',
+                border: '1px solid #d1d5db',
+                borderRadius: '0.5rem',
+                overflow: 'hidden'
+              }}>
+                <button
+                  onClick={() => setViewMode('grid')}
+                  style={{
+                    padding: '0.5rem',
+                    backgroundColor: viewMode === 'grid' ? '#dc2626' : 'white',
+                    color: viewMode === 'grid' ? 'white' : '#6b7280',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <Grid size={20} />
+                </button>
+                {!isMobile && (
+                  <button
+                    onClick={() => setViewMode('list')}
+                    style={{
+                      padding: '0.5rem',
+                      backgroundColor: viewMode === 'list' ? '#dc2626' : 'white',
+                      color: viewMode === 'list' ? 'white' : '#6b7280',
+                      border: 'none',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <List size={20} />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Horizontal Category Navigation */}
+      <div style={styles.categoryNavigation}>
+        <div style={{
+          maxWidth: '80rem',
+          margin: '0 auto',
+          padding: '0 1rem'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            overflowX: 'auto',
+            overflowY: 'hidden',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            WebkitScrollbar: { display: 'none' },
+            paddingBottom: '0.25rem'
+          }}>
+            {/* All Products Button */}
             <button
-              onClick={() => setShowFilters(!showFilters)}
+              onClick={() => setActiveFilter('all')}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                padding: '0.5rem 1rem',
-                border: '1px solid #d1d5db',
-                borderRadius: '0.5rem',
-                backgroundColor: 'white',
+                padding: isMobile ? '0.5rem 0.75rem' : '0.75rem 1rem',
+                borderRadius: '9999px',
+                border: activeFilter === 'all' ? '2px solid #dc2626' : '1px solid #d1d5db',
+                backgroundColor: activeFilter === 'all' ? '#dc2626' : 'white',
+                color: activeFilter === 'all' ? 'white' : '#374151',
                 cursor: 'pointer',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                fontSize: isMobile ? '0.875rem' : '1rem',
+                fontWeight: activeFilter === 'all' ? '600' : '500',
+                whiteSpace: 'nowrap',
+                flexShrink: 0
+              }}
+              onMouseEnter={(e) => {
+                if (activeFilter !== 'all') {
+                  e.target.style.backgroundColor = '#f3f4f6';
+                  e.target.style.borderColor = '#9ca3af';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeFilter !== 'all') {
+                  e.target.style.backgroundColor = 'white';
+                  e.target.style.borderColor = '#d1d5db';
+                }
               }}
             >
-              <SlidersHorizontal size={20} />
-              Filters
-              {(selectedBrands.length > 0 || activeFilter !== 'all') && (
-                <span style={{
-                  marginLeft: '0.25rem',
-                  backgroundColor: '#dc2626',
-                  color: 'white',
-                  fontSize: '0.75rem',
-                  padding: '0.125rem 0.5rem',
-                  borderRadius: '9999px'
-                }}>
-                  {selectedBrands.length + (activeFilter !== 'all' ? 1 : 0)}
-                </span>
-              )}
+              <Grid size={isMobile ? 16 : 18} />
+              <span>All Products</span>
+              <span style={{
+                backgroundColor: activeFilter === 'all' ? 'rgba(255, 255, 255, 0.2)' : '#e5e7eb',
+                color: activeFilter === 'all' ? 'white' : '#6b7280',
+                fontSize: '0.75rem',
+                padding: '0.125rem 0.375rem',
+                borderRadius: '9999px',
+                fontWeight: '600'
+              }}>
+                {allProducts.length}
+              </span>
             </button>
 
-            {/* View Toggle */}
-            <div style={{
-              display: 'flex',
-              border: '1px solid #d1d5db',
-              borderRadius: '0.5rem',
-              overflow: 'hidden'
-            }}>
-              <button
-                onClick={() => setViewMode('grid')}
-                style={{
-                  padding: '0.5rem',
-                  backgroundColor: viewMode === 'grid' ? '#dc2626' : 'white',
-                  color: viewMode === 'grid' ? 'white' : '#6b7280',
-                  border: 'none',
-                  cursor: 'pointer'
-                }}
-              >
-                <Grid size={20} />
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                style={{
-                  padding: '0.5rem',
-                  backgroundColor: viewMode === 'list' ? '#dc2626' : 'white',
-                  color: viewMode === 'list' ? 'white' : '#6b7280',
-                  border: 'none',
-                  cursor: 'pointer'
-                }}
-              >
-                <List size={20} />
-              </button>
-            </div>
+            {/* Category Pills */}
+            {productCategories.map((category) => {
+              const count = allProducts.filter(p => p.category === category.id).length;
+              const IconComponent = category.icon;
+              const isActive = activeFilter === category.id;
+
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveFilter(category.id)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: isMobile ? '0.5rem 0.75rem' : '0.75rem 1rem',
+                    borderRadius: '9999px',
+                    border: isActive ? '2px solid #dc2626' : '1px solid #d1d5db',
+                    backgroundColor: isActive ? '#dc2626' : 'white',
+                    color: isActive ? 'white' : '#374151',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    fontSize: isMobile ? '0.875rem' : '1rem',
+                    fontWeight: isActive ? '600' : '500',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) {
+                      e.target.style.backgroundColor = '#f3f4f6';
+                      e.target.style.borderColor = '#9ca3af';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) {
+                      e.target.style.backgroundColor = 'white';
+                      e.target.style.borderColor = '#d1d5db';
+                    }
+                  }}
+                >
+                  <IconComponent size={isMobile ? 16 : 18} />
+                  <span>{isMobile && category.title.length > 10 ? category.title.substring(0, 8) + '...' : category.title}</span>
+                  <span style={{
+                    backgroundColor: isActive ? 'rgba(255, 255, 255, 0.2)' : '#e5e7eb',
+                    color: isActive ? 'white' : '#6b7280',
+                    fontSize: '0.75rem',
+                    padding: '0.125rem 0.375rem',
+                    borderRadius: '9999px',
+                    fontWeight: '600'
+                  }}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
-          {/* Results Count */}
+          {/* Scroll Indicator for Mobile */}
+          {isMobile && (
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '0.5rem',
+              gap: '0.25rem',
+              fontSize: '0.75rem',
+              color: '#9ca3af'
+            }}>
+              <ChevronLeft size={12} />
+              <span>Swipe to see all categories</span>
+              <ChevronRight size={12} />
+            </div>
+          )}
+
+          {/* Results Summary */}
           <div style={{
             marginTop: '1rem',
             display: 'flex',
@@ -326,37 +511,17 @@ const ProductsPage = () => {
                 </span>
               )}
             </div>
-            
-            {/* Active Filters */}
-            {(activeFilter !== 'all' || selectedBrands.length > 0) && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>Active filters:</span>
-                {activeFilter !== 'all' && (
-                  <span style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.25rem',
-                    padding: '0.25rem 0.5rem',
-                    backgroundColor: 'rgba(220, 38, 38, 0.1)',
-                    color: '#b91c1c',
-                    fontSize: '0.75rem',
-                    borderRadius: '9999px'
-                  }}>
-                    {getCategoryTitle(activeFilter)}
-                    <button
-                      onClick={() => setActiveFilter('all')}
-                      style={{
-                        padding: '0.125rem',
-                        borderRadius: '50%',
-                        border: 'none',
-                        backgroundColor: 'transparent',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <X size={12} />
-                    </button>
-                  </span>
-                )}
+
+            {/* Active Brand Filters */}
+            {selectedBrands.length > 0 && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                flexWrap: 'wrap',
+                fontSize: isMobile ? '0.75rem' : '0.875rem'
+              }}>
+                <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>Brand filters:</span>
                 {selectedBrands.map(brand => (
                   <span key={brand} style={{
                     display: 'inline-flex',
@@ -389,41 +554,51 @@ const ProductsPage = () => {
         </div>
       </div>
 
-      <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '2rem 1rem' }}>
+      <div style={{
+        maxWidth: '80rem',
+        margin: '0 auto',
+        padding: isMobile ? '1rem' : '2rem 1rem'
+      }}>
         <div style={{
           display: 'flex',
-          flexDirection: window.innerWidth < 1024 ? 'column' : 'row',
-          gap: '2rem'
+          flexDirection: isTablet ? 'column' : 'row',
+          gap: isMobile ? '1rem' : '2rem'
         }}>
-          {/* Sidebar Filters */}
-          <div style={{
-            width: window.innerWidth < 1024 ? '100%' : '20rem',
-            display: showFilters || window.innerWidth >= 1024 ? 'block' : 'none'
-          }}>
+          {/* Advanced Filters Sidebar - Now only for brands and other advanced options */}
+          {showFilters && (
             <div style={{
-              backgroundColor: 'white',
-              borderRadius: '0.75rem',
-              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-              border: '1px solid #e5e7eb',
-              padding: '1.5rem',
-              position: 'sticky',
-              top: '6rem'
+              width: isTablet ? '100%' : '20rem',
+              position: isTablet ? 'fixed' : 'static',
+              top: isTablet ? 0 : 'auto',
+              left: isTablet ? 0 : 'auto',
+              right: isTablet ? 0 : 'auto',
+              bottom: isTablet ? 0 : 'auto',
+              zIndex: isTablet ? 50 : 'auto',
+              backgroundColor: isTablet ? 'rgba(0, 0, 0, 0.5)' : 'transparent',
+              padding: isTablet ? '1rem' : '0'
             }}>
               <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '1.5rem'
+                backgroundColor: 'white',
+                borderRadius: '0.75rem',
+                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+                border: '1px solid #e5e7eb',
+                padding: isMobile ? '1rem' : '1.5rem',
+                marginTop: isTablet ? '2rem' : '0'
               }}>
-                <h3 style={{
-                  fontSize: '1.125rem',
-                  fontWeight: '600',
-                  color: '#111827',
-                  margin: 0
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '1.5rem'
                 }}>
-                  Filters
-                </h3>
-                {window.innerWidth < 1024 && (
+                  <h3 style={{
+                    fontSize: '1.125rem',
+                    fontWeight: '600',
+                    color: '#111827',
+                    margin: 0
+                  }}>
+                    Advanced Filters
+                  </h3>
                   <button
                     onClick={() => setShowFilters(false)}
                     style={{
@@ -436,162 +611,86 @@ const ProductsPage = () => {
                   >
                     <X size={20} />
                   </button>
-                )}
-              </div>
+                </div>
 
-              {/* Categories */}
-              <div style={{ marginBottom: '1.5rem' }}>
-                <h4 style={{
-                  fontSize: '0.875rem',
-                  fontWeight: '600',
-                  color: '#111827',
-                  marginBottom: '0.75rem'
-                }}>
-                  Categories
-                </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {/* Brands */}
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <h4 style={{
+                    fontSize: '0.875rem',
+                    fontWeight: '600',
+                    color: '#111827',
+                    marginBottom: '0.75rem'
+                  }}>
+                    Filter by Brand
+                  </h4>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.5rem',
+                    maxHeight: isMobile ? '10rem' : '12rem',
+                    overflowY: 'auto'
+                  }}>
+                    {allBrands.map((brand) => {
+                      const count = allProducts.filter(p => p.brand === brand).length;
+                      return (
+                        <label key={brand} style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          cursor: 'pointer',
+                          padding: '0.25rem 0'
+                        }}>
+                          <input
+                            type="checkbox"
+                            checked={selectedBrands.includes(brand)}
+                            onChange={() => toggleBrandFilter(brand)}
+                            style={{
+                              width: '1rem',
+                              height: '1rem',
+                              accentColor: '#dc2626'
+                            }}
+                          />
+                          <span style={{
+                            fontSize: '0.875rem',
+                            color: '#374151',
+                            flex: 1
+                          }}>
+                            {brand}
+                          </span>
+                          <span style={{
+                            fontSize: '0.75rem',
+                            color: '#6b7280'
+                          }}>
+                            ({count})
+                          </span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Clear Brand Filters */}
+                {selectedBrands.length > 0 && (
                   <button
-                    onClick={() => setActiveFilter('all')}
+                    onClick={() => setSelectedBrands([])}
                     style={{
                       width: '100%',
-                      textAlign: 'left',
-                      padding: '0.5rem 0.75rem',
+                      padding: '0.5rem 1rem',
+                      fontSize: '0.875rem',
+                      color: '#dc2626',
+                      border: '1px solid #dc2626',
                       borderRadius: '0.5rem',
-                      border: activeFilter === 'all' ? '1px solid rgba(220, 38, 38, 0.2)' : 'none',
-                      backgroundColor: activeFilter === 'all' ? 'rgba(220, 38, 38, 0.1)' : 'transparent',
-                      color: activeFilter === 'all' ? '#b91c1c' : '#374151',
+                      backgroundColor: 'transparent',
                       cursor: 'pointer',
                       transition: 'all 0.3s ease'
                     }}
                   >
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between'
-                    }}>
-                      <span>All Products</span>
-                      <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>
-                        ({allProducts.length})
-                      </span>
-                    </div>
+                    Clear Brand Filters
                   </button>
-                  {productCategories.map((category) => {
-                    const count = allProducts.filter(p => p.category === category.id).length;
-                    const IconComponent = category.icon;
-                    return (
-                      <button
-                        key={category.id}
-                        onClick={() => setActiveFilter(category.id)}
-                        style={{
-                          width: '100%',
-                          textAlign: 'left',
-                          padding: '0.5rem 0.75rem',
-                          borderRadius: '0.5rem',
-                          border: activeFilter === category.id ? '1px solid rgba(220, 38, 38, 0.2)' : 'none',
-                          backgroundColor: activeFilter === category.id ? 'rgba(220, 38, 38, 0.1)' : 'transparent',
-                          color: activeFilter === category.id ? '#b91c1c' : '#374151',
-                          cursor: 'pointer',
-                          transition: 'all 0.3s ease'
-                        }}
-                      >
-                        <div style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.5rem'
-                        }}>
-                          <IconComponent size={16} />
-                          <span style={{ flex: 1 }}>{category.title}</span>
-                          <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>
-                            ({count})
-                          </span>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
+                )}
               </div>
-
-              {/* Brands */}
-              <div style={{ marginBottom: '1.5rem' }}>
-                <h4 style={{
-                  fontSize: '0.875rem',
-                  fontWeight: '600',
-                  color: '#111827',
-                  marginBottom: '0.75rem'
-                }}>
-                  Brands
-                </h4>
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.5rem',
-                  maxHeight: '12rem',
-                  overflowY: 'auto'
-                }}>
-                  {allBrands.map((brand) => {
-                    const count = allProducts.filter(p => p.brand === brand).length;
-                    return (
-                      <label key={brand} style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        cursor: 'pointer',
-                        padding: '0.25rem 0'
-                      }}>
-                        <input
-                          type="checkbox"
-                          checked={selectedBrands.includes(brand)}
-                          onChange={() => toggleBrandFilter(brand)}
-                          style={{
-                            width: '1rem',
-                            height: '1rem',
-                            accentColor: '#dc2626'
-                          }}
-                        />
-                        <span style={{
-                          fontSize: '0.875rem',
-                          color: '#374151',
-                          flex: 1
-                        }}>
-                          {brand}
-                        </span>
-                        <span style={{
-                          fontSize: '0.75rem',
-                          color: '#6b7280'
-                        }}>
-                          ({count})
-                        </span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Clear Filters */}
-              {(activeFilter !== 'all' || selectedBrands.length > 0 || searchTerm) && (
-                <button
-                  onClick={() => {
-                    setActiveFilter('all');
-                    setSelectedBrands([]);
-                    setSearchTerm('');
-                  }}
-                  style={{
-                    width: '100%',
-                    padding: '0.5rem 1rem',
-                    fontSize: '0.875rem',
-                    color: '#dc2626',
-                    border: '1px solid #dc2626',
-                    borderRadius: '0.5rem',
-                    backgroundColor: 'transparent',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease'
-                  }}
-                >
-                  Clear All Filters
-                </button>
-              )}
             </div>
-          </div>
+          )}
 
           {/* Products Grid/List */}
           <div style={{ flex: 1 }}>
@@ -635,9 +734,9 @@ const ProductsPage = () => {
             ) : (
               <div style={{
                 display: 'grid',
-                gap: '1.5rem',
-                gridTemplateColumns: viewMode === 'grid' 
-                  ? 'repeat(auto-fit, minmax(280px, 1fr))' 
+                gap: isMobile ? '1rem' : '1.5rem',
+                gridTemplateColumns: viewMode === 'grid'
+                  ? (isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(280px, 1fr))')
                   : '1fr'
               }}>
                 {sortedProducts.map((product, index) => (
@@ -646,7 +745,7 @@ const ProductsPage = () => {
                     data-section="products"
                     style={{
                       ...styles.productCard,
-                      display: viewMode === 'list' ? 'flex' : 'block',
+                      display: viewMode === 'list' && !isMobile ? 'flex' : 'block',
                       animationDelay: `${index * 0.05}s`
                     }}
                     onMouseEnter={(e) => {
@@ -660,8 +759,8 @@ const ProductsPage = () => {
                     <div style={{
                       position: 'relative',
                       overflow: 'hidden',
-                      width: viewMode === 'list' ? '12rem' : '100%',
-                      height: '12rem',
+                      width: viewMode === 'list' && !isMobile ? '12rem' : '100%',
+                      height: isMobile ? '10rem' : '12rem',
                       flexShrink: 0
                     }}>
                       <img
@@ -675,7 +774,7 @@ const ProductsPage = () => {
                         }}
                         loading="lazy"
                       />
-                      
+
                       {/* Badges */}
                       <div style={{
                         position: 'absolute',
@@ -709,9 +808,9 @@ const ProductsPage = () => {
                         opacity: 0,
                         transition: 'opacity 0.3s ease'
                       }}
-                      className="quick-actions"
+                        className="quick-actions"
                       >
-                        <button 
+                        <button
                           onClick={() => toggleWishlist(product.id)}
                           style={{
                             padding: '0.5rem',
@@ -751,7 +850,7 @@ const ProductsPage = () => {
                     </div>
 
                     {/* Product Content */}
-                    <div style={{ padding: '1.5rem', flex: 1 }}>
+                    <div style={{ padding: isMobile ? '1rem' : '1.5rem', flex: 1 }}>
                       {/* Header */}
                       <div style={{
                         display: 'flex',
@@ -761,7 +860,7 @@ const ProductsPage = () => {
                       }}>
                         <div style={{ flex: 1 }}>
                           <h3 style={{
-                            fontSize: '1.125rem',
+                            fontSize: isMobile ? '1rem' : '1.125rem',
                             fontWeight: '600',
                             color: '#111827',
                             marginBottom: '0.25rem',
@@ -816,7 +915,7 @@ const ProductsPage = () => {
                             flexWrap: 'wrap',
                             gap: '0.25rem'
                           }}>
-                            {product.features?.slice(0, viewMode === 'list' ? 4 : 3).map((feature, idx) => (
+                            {product.features?.slice(0, viewMode === 'list' && !isMobile ? 4 : 3).map((feature, idx) => (
                               <span
                                 key={idx}
                                 style={{
@@ -826,7 +925,7 @@ const ProductsPage = () => {
                                   padding: '0.25rem 0.5rem',
                                   backgroundColor: '#f3f4f6',
                                   color: '#374151',
-                                  fontSize: '0.75rem',
+                                  fontSize: isMobile ? '0.625rem' : '0.75rem',
                                   borderRadius: '9999px'
                                 }}
                               >
@@ -834,21 +933,21 @@ const ProductsPage = () => {
                                 {feature}
                               </span>
                             ))}
-                            {product.features?.length > (viewMode === 'list' ? 4 : 3) && (
+                            {product.features?.length > (viewMode === 'list' && !isMobile ? 4 : 3) && (
                               <span style={{
-                                fontSize: '0.75rem',
+                                fontSize: isMobile ? '0.625rem' : '0.75rem',
                                 color: '#6b7280',
                                 padding: '0.25rem 0.5rem'
                               }}>
-                                +{product.features.length - (viewMode === 'list' ? 4 : 3)} more
+                                +{product.features.length - (viewMode === 'list' && !isMobile ? 4 : 3)} more
                               </span>
                             )}
                           </div>
                         </div>
                       )}
 
-                      {/* Specifications - Only in list view */}
-                      {viewMode === 'list' && (
+                      {/* Specifications - Only in list view and not mobile */}
+                      {viewMode === 'list' && !isMobile && (
                         <div style={{ marginBottom: '1rem' }}>
                           <h5 style={{
                             fontSize: '0.875rem',
@@ -863,7 +962,7 @@ const ProductsPage = () => {
                             gridTemplateColumns: 'repeat(2, 1fr)',
                             gap: '0.5rem'
                           }}>
-                            {product.specifications.slice(0, 4).map((spec, idx) => (
+                            {product.specifications?.slice(0, 4).map((spec, idx) => (
                               <div key={idx} style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -884,47 +983,45 @@ const ProductsPage = () => {
                         </div>
                       )}
 
-                      {/* Quick Contact - Only in list view */}
-                      {viewMode === 'list' && (
-                        <div>
-                          <div style={{ display: 'flex', gap: '0.5rem' }}>
-                            <button style={{
-                              flex: 1,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              gap: '0.5rem',
-                              padding: '0.5rem 0.75rem',
-                              fontSize: '0.875rem',
-                              color: '#6b7280',
-                              border: '1px solid #d1d5db',
-                              borderRadius: '0.5rem',
-                              backgroundColor: 'white',
-                              cursor: 'pointer'
-                            }}>
-                              <Phone size={14} />
-                              Call for Quote
-                            </button>
-                            <button style={{
-                              flex: 1,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              gap: '0.5rem',
-                              padding: '0.5rem 0.75rem',
-                              fontSize: '0.875rem',
-                              color: '#6b7280',
-                              border: '1px solid #d1d5db',
-                              borderRadius: '0.5rem',
-                              backgroundColor: 'white',
-                              cursor: 'pointer'
-                            }}>
-                              <Mail size={14} />
-                              Email Quote
-                            </button>
-                          </div>
-                        </div>
-                      )}
+                      {/* Contact Buttons */}
+                      <div style={{
+                        display: 'flex',
+                        flexDirection: isMobile ? 'column' : 'row',
+                        gap: '0.5rem'
+                      }}>
+                        <button
+                          onClick={() => window.open('tel:+971528441348', '_self')}
+                          style={{
+                            flex: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '0.5rem',
+                            padding: '0.5rem 0.75rem',
+                            fontSize: '0.875rem',
+                            color: '#6b7280',
+                            border: '1px solid #d1d5db',
+                            borderRadius: '0.5rem',
+                            backgroundColor: 'white',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.target.style.backgroundColor = '#f3f4f6';
+                            e.target.style.borderColor = '#dc2626';
+                            e.target.style.color = '#dc2626';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.target.style.backgroundColor = 'white';
+                            e.target.style.borderColor = '#d1d5db';
+                            e.target.style.color = '#6b7280';
+                          }}
+                        >
+                          <Phone size={14} />
+                          {isMobile ? 'Call' : 'Call for Quote'}
+                        </button>
+
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -954,8 +1051,8 @@ const ProductsPage = () => {
       <div style={{
         background: 'linear-gradient(135deg, #111827 0%, #1f2937 100%)',
         color: 'white',
-        padding: '4rem 0',
-        marginTop: '4rem'
+        padding: isMobile ? '3rem 0' : '4rem 0',
+        marginTop: isMobile ? '3rem' : '4rem'
       }}>
         <div style={{
           maxWidth: '64rem',
@@ -964,7 +1061,7 @@ const ProductsPage = () => {
           textAlign: 'center'
         }}>
           <h2 style={{
-            fontSize: 'clamp(2rem, 4vw, 2.5rem)',
+            fontSize: isMobile ? '1.5rem' : 'clamp(2rem, 4vw, 2.5rem)',
             fontWeight: '700',
             marginBottom: '1rem',
             fontFamily: "'Playfair Display', serif"
@@ -972,64 +1069,41 @@ const ProductsPage = () => {
             Need Help Finding the Right Product?
           </h2>
           <p style={{
-            fontSize: '1.25rem',
+            fontSize: isMobile ? '1rem' : '1.25rem',
             color: 'rgba(255, 255, 255, 0.8)',
             marginBottom: '2rem',
-            lineHeight: 1.6
+            lineHeight: 1.6,
+            padding: isMobile ? '0 1rem' : '0'
           }}>
             Our experts are here to help you choose the perfect materials for your project
           </p>
           <div style={{
             display: 'flex',
-            flexDirection: window.innerWidth < 640 ? 'column' : 'row',
+            flexDirection: isMobile ? 'column' : 'row',
             gap: '1rem',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            padding: isMobile ? '0 1rem' : '0'
           }}>
-            <button style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.5rem',
-              padding: '0.75rem 2rem',
-              backgroundColor: '#dc2626',
-              color: 'white',
-              borderRadius: '0.5rem',
-              border: 'none',
-              cursor: 'pointer'
-            }}>
-              <Phone size={20} />
-              Call +971 52 682 2173
-            </button>
-            <button style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.5rem',
-              padding: '0.75rem 2rem',
-              border: '1px solid white',
-              color: 'white',
-              borderRadius: '0.5rem',
-              backgroundColor: 'transparent',
-              cursor: 'pointer'
-            }}>
-              <Mail size={20} />
-              Email Us
-            </button>
-            <button style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.5rem',
-              padding: '0.75rem 2rem',
-              border: '1px solid white',
-              color: 'white',
-              borderRadius: '0.5rem',
-              backgroundColor: 'transparent',
-              cursor: 'pointer'
-            }}>
-              <Download size={20} />
-              Download Catalog
-            </button>
+            <a href="tel:+971528441348" style={{ textDecoration: 'none' }}>
+              <button style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem',
+                padding: '0.75rem 2rem',
+                backgroundColor: '#dc2626',
+                color: 'white',
+                borderRadius: '0.5rem',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: isMobile ? '0.875rem' : '1rem'
+              }}>
+                <Phone size={20} />
+                Call +971 52 844 1348
+              </button>
+            </a>
+
+
           </div>
         </div>
       </div>
@@ -1053,6 +1127,22 @@ const ProductsPage = () => {
         
         .product-card:hover h3 {
           color: #dc2626;
+        }
+        
+        @media (max-width: 768px) {
+          .quick-actions {
+            opacity: 1 !important;
+          }
+        }
+        
+        /* Hide scrollbar for category navigation */
+        .category-scroll::-webkit-scrollbar {
+          display: none;
+        }
+        
+        .category-scroll {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
     </div>

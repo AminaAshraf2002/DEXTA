@@ -1707,3 +1707,432 @@ body {
 .home-hero-addresses + .home-hero-slides {
   margin-top: 2rem;
 }
+/* Mobile Responsive Fixes for Hero and Stats Sections */
+
+/* Fix Hero Section Mobile Issues */
+.home-hero-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--dexta-charcoal) 0%, var(--dexta-dark-grey) 100%);
+  margin-top: 0;
+  padding-top: var(--header-height-desktop);
+  box-sizing: border-box;
+}
+
+/* Hero Addresses - Better Mobile Layout */
+.home-hero-addresses {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0 2rem 0;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.95);
+  flex-wrap: wrap;
+  z-index: 10;
+  position: relative;
+  padding: 0 1rem; /* Add padding for mobile */
+}
+
+.home-address-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Fix Stats Section Mobile Issues */
+.home-stats-section {
+  position: relative;
+  padding: 3rem 0; /* Reduce padding for mobile */
+  background: transparent;
+  color: white;
+  overflow: hidden;
+  margin-top: -1px;
+  min-height: 280px; /* Use min-height instead of fixed height */
+}
+
+.home-stats-container {
+  position: relative;
+  z-index: 10;
+  padding: 2rem 1rem; /* Add horizontal padding */
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.home-stats-grid {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem; /* Reduce gap for mobile */
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem; /* Add padding */
+}
+
+/* Enhanced Mobile Responsive Design */
+@media (max-width: 1024px) {
+  .home-hero-section {
+    padding-top: var(--header-height-tablet);
+    min-height: 90vh; /* Reduce height slightly */
+  }
+  
+  .home-hero-addresses {
+    gap: 0.75rem;
+    margin: 1rem 0;
+    padding: 0 1.5rem;
+  }
+  
+  .home-stats-section {
+    min-height: 260px;
+    padding: 2.5rem 0;
+  }
+  
+  .home-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 600px;
+  }
+  
+  .home-hero-title {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    margin-top: -60px;
+    line-height: 1.1;
+  }
+  
+  .home-hero-actions {
+    margin-top: -80px;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-hero-section {
+    padding-top: var(--header-height-mobile);
+    min-height: 85vh;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .home-hero-content {
+    padding: 1rem;
+    max-width: 100%;
+  }
+  
+  .home-hero-addresses {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1rem 0;
+    padding: 0 1rem;
+  }
+  
+  .home-address-separator {
+    display: none;
+  }
+  
+  .home-address-item {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+    width: fit-content;
+    max-width: 90%;
+    text-align: center;
+  }
+  
+  .home-hero-badge {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.8rem;
+    margin-top: 40px;
+  }
+  
+  .home-hero-title {
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+    margin-top: -40px;
+    margin-bottom: 0.5rem;
+    padding: 0 0.5rem;
+  }
+  
+  .home-hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .home-hero-description {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+    max-width: 90%;
+  }
+  
+  .home-hero-tagline {
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .home-hero-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: -60px;
+    width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .home-btn-primary,
+  .home-btn-secondary {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .home-stats-section {
+    min-height: 240px;
+    padding: 2rem 0;
+  }
+  
+  .home-stats-container {
+    padding: 1rem;
+  }
+  
+  .home-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+  
+  .home-stat-item {
+    text-align: center;
+  }
+  
+  .home-stat-icon-bg {
+    width: 45px;
+    height: 45px;
+    margin: 0 auto 0.75rem;
+  }
+  
+  .home-stat-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .home-stat-number {
+    font-size: 1.6rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .home-stat-label {
+    font-size: 0.75rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .home-stat-description {
+    font-size: 0.7rem;
+    line-height: 1.3;
+  }
+  
+  .home-slide-indicators {
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .home-indicator {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-hero-section {
+    padding-top: var(--header-height-small);
+    min-height: 80vh;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  .home-hero-content {
+    padding: 0.75rem;
+  }
+  
+  .home-hero-addresses {
+    margin: 0.75rem 0;
+    padding: 0 0.75rem;
+  }
+  
+  .home-address-item {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.5rem;
+    max-width: 95%;
+  }
+  
+  .home-hero-badge {
+    font-size: 0.65rem;
+    padding: 0.35rem 0.7rem;
+    margin-top: 30px;
+  }
+  
+  .home-hero-title {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+    margin-top: -30px;
+    padding: 0 0.25rem;
+  }
+  
+  .home-hero-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .home-hero-description {
+    font-size: 0.85rem;
+    padding: 0 0.5rem;
+  }
+  
+  .home-hero-tagline {
+    font-size: 0.75rem;
+  }
+  
+  .home-hero-actions {
+    margin-top: -50px;
+    padding: 0 0.75rem;
+  }
+  
+  .home-btn-primary,
+  .home-btn-secondary {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.85rem;
+    max-width: 260px;
+  }
+  
+  .home-stats-section {
+    min-height: 220px;
+    padding: 1.5rem 0;
+  }
+  
+  .home-stats-container {
+    padding: 0.75rem;
+  }
+  
+  .home-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    padding: 0 0.25rem;
+  }
+  
+  .home-stat-icon-bg {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 0.5rem;
+  }
+  
+  .home-stat-icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .home-stat-number {
+    font-size: 1.4rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .home-stat-label {
+    font-size: 0.7rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .home-stat-description {
+    font-size: 0.65rem;
+    line-height: 1.2;
+  }
+  
+  .home-slide-indicators {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .home-indicator {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* Fix for very small screens (landscape phones) */
+@media (max-width: 360px) {
+  .home-hero-title {
+    font-size: clamp(1.3rem, 8vw, 1.8rem);
+  }
+  
+  .home-hero-actions {
+    gap: 0.6rem;
+  }
+  
+  .home-btn-primary,
+  .home-btn-secondary {
+    padding: 0.7rem 1rem;
+    font-size: 0.8rem;
+    max-width: 240px;
+  }
+  
+  .home-stats-grid {
+    gap: 0.5rem;
+  }
+  
+  .home-stat-number {
+    font-size: 1.2rem;
+  }
+  
+  .home-address-item {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.4rem;
+  }
+}
+
+/* Fix for export-import badge on mobile */
+.export-import-badge {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2));
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fef2f2;
+  font-weight: 500;
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@media (max-width: 768px) {
+  .export-import-badge {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(220, 38, 38, 0.25));
+    font-size: 0.75rem;
+    padding: 0.35rem 0.5rem;
+  }
+}
+
+/* Ensure proper spacing and prevent overflow */
+.home-hero-slides {
+  position: relative;
+  min-height: 300px;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .home-hero-slides {
+    min-height: 250px;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-hero-slides {
+    min-height: 200px;
+    margin-bottom: 1rem;
+  }
+}
